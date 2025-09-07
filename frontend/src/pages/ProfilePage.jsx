@@ -15,6 +15,9 @@ const ProfilePage = () => {
     }
   };
 
+
+  //added
+
   const handleSave = () => {
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
