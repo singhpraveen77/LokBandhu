@@ -5,7 +5,7 @@ const ProfilePage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [profileImage, setProfileImage] = useState(
-    "https://lh3.googleusercontent.com/aida-public/AB6AXuCHdcqiFzXrZN0cFj3x7HmNnRkbjUwO898G9AUdV_1nf1FRrLHM_dzLRxYjrPYpgZGaAToPd3zv5DM1Iz1ZY1Ru-vpuNy-hM1BVZUq1mw5VQymhf72s4Q-gZhD8YRNfkla6UWhBMHtrUX17mY605iYqhKyfzIl02doBBlj8o-u-h9UBRnL_40ju4rWOQ9-bQIZnvcnw-RythZSNCWA6S_E_g_kmM2TiBWPierYHs0reSNyl-JSiNeyX5RWePZdmKAj8Lan984aIFBg"
+    "https://static.vecteezy.com/system/resources/thumbnails/029/271/062/small_2x/avatar-profile-icon-in-flat-style-male-user-profile-illustration-on-isolated-background-man-profile-sign-business-concept-vector.jpg"
   );
 
   const handleImageUpload = (e) => {

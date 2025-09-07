@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const WelcomePage = () => {
   const [role, setRole] = useState("citizen");
-
+  const navigate=useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
+    navigate("/loginpage")
     console.log("Selected role:", role);
     // You can handle navigation or next step here
   };
@@ -95,7 +97,7 @@ const WelcomePage = () => {
               className="w-full flex items-center justify-center gap-2 rounded-full py-4 px-6 bg-green-500 text-gray-900 font-bold text-lg hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-500/50 transition-all duration-300"
             >
               <span>Continue</span>
-              <span className="material-symbols-outlined">arrow_forward</span>
+              {/* <span className="material-symbols-outlined">arrow_forward</span> */}
             </button>
           </form>
         </div>

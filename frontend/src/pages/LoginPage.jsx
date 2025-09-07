@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -13,6 +14,7 @@ const LoginPage = () => {
   };
 
   const handleSubmit = (e) => {
+    navigate("/loksabha")
     e.preventDefault();
     console.log("Form data submitted:", formData);
     // Handle login logic here
