@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import LocationMap from "../component/LocationMap";
 
 const initialPosts = [
   {
@@ -360,8 +361,8 @@ const LokSabha = () => {
           {/* Dialog */}
           <div
             ref={dialogRef}
-            className="relative z-10 w-full max-w-xl mx-4 rounded-2xl bg-gray-800 border border-gray-700 shadow-2xl"
-          >
+               className="relative z-10 overflow-y-scroll h-[90vh] w-full max-w-xl mx-4 
+             rounded-2xl bg-gray-800 border border-gray-700 shadow-2xl custom-scrollbar" >
             <div className="flex items-center justify-between p-5 border-b border-gray-700">
               <h3 id="add-post-title" className="text-xl font-semibold">
                 Add New Post
@@ -394,20 +395,8 @@ const LokSabha = () => {
                 </div>
 
                 <div className="flex flex-col">
-                  <label
-                    htmlFor="location"
-                    className="text-sm text-gray-300 mb-1"
-                  >
-                    Location
-                  </label>
-                  <input
-                    id="location"
-                    name="location"
-                    value={form.location}
-                    onChange={handleChange}
-                    className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    placeholder="City, Country"
-                  />
+                  
+                <LocationMap />
                 </div>
               </div>
 
@@ -525,22 +514,7 @@ const LokSabha = () => {
                   </div>
                 )}
 
-                <div className="mt-4">
-                  <label
-                    htmlFor="image"
-                    className="text-sm text-gray-300 mb-1 block"
-                  >
-                    Or paste an image URL
-                  </label>
-                  <input
-                    id="image"
-                    name="image"
-                    value={form.image}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    placeholder="https://..."
-                  />
-                </div>
+                
               </div>
 
               <div className="flex items-center justify-end gap-3 pt-2">
