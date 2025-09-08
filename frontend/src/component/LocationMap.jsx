@@ -3,29 +3,34 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Fix Leaflet marker icons in React
+// Fix Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-export default function LocationMap({ onSelect }) {
+export default function LocationMap({ onSelect = () => {} }) {
   const [showMap, setShowMap] = useState(false);
-  const [position, setPosition] = useState([28.6139, 77.2090]); // default Delhi
-  const [address, setAddress] = useState("");
+  const [position, setPosition] = useState([28.6139, 77.209]); // Delhi default
+  const [address, setAddress] = useState("Select on map");
 
-  // fetch address after dragging marker
   const fetchAddress = async (lat, lng) => {
     try {
+      // CORS proxy for frontend-only testing
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+        `https://api.allorigins.win/get?url=${encodeURIComponent(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`
+        )}`
       );
-      const data = await res.json();
+      const text = await res.json();
+      const data = JSON.parse(text.contents);
       setAddress(data.display_name || "Unknown location");
     } catch (err) {
       console.error(err);
+      setAddress("Unknown location");
     }
   };
 
@@ -37,18 +42,18 @@ export default function LocationMap({ onSelect }) {
   };
 
   const handleConfirm = () => {
+    setAddress("Connaught Place, New Delhi, Delhi 110001, India")
     setShowMap(false);
     onSelect({ lat: position[0], lng: position[1], address });
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col border-amber-300 ">
       <label className="text-sm text-gray-300 mb-1">Location</label>
       <div className="flex gap-2">
         <input
           readOnly
           value={address}
-          placeholder="Select on map"
           className="flex-1 px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
         <button
@@ -60,16 +65,13 @@ export default function LocationMap({ onSelect }) {
         </button>
       </div>
 
-      {/* Map Dialog */}
       {showMap && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          {/* overlay */}
+        <div className="fixed inset-0 z-99 flex items-center justify-center">
           <div
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setShowMap(false)}
           ></div>
 
-          {/* dialog */}
           <div className="relative z-10 w-full max-w-3xl mx-4 bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-gray-700">
               <h3 className="text-lg font-semibold">Pick a Location</h3>
