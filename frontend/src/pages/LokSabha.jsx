@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import LocationMap from "../component/LocationMap";
+import axios from "axios";
 
 const initialPosts = [
   {
@@ -114,7 +115,7 @@ const LokSabha = () => {
   const [filteredPosts, setFilteredPosts] = useState(initialPosts);
   const [activeCategory, setActiveCategory] = useState("All Issues");
   const [open, setOpen] = useState(false);
-
+  const [local, setLocal] = useState("Connaught Place, New Delhi, Delhi 110001, India");
   const [form, setForm] = useState({
     author: "",
     location: "",
@@ -173,14 +174,21 @@ const LokSabha = () => {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.title || !form.description || !form.author) return;
+
+
 
     const img =
       imagePreview ||
       form.image.trim() ||
       "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&auto=format&fit=crop";
+
+    
+
+    sendSms();
 
     const newPost = {
       author: form.author.trim(),
@@ -214,6 +222,15 @@ const LokSabha = () => {
       prev.map((p, i) => (i === idx ? { ...p, likes: p.likes + 1 } : p))
     );
   };
+
+const sendSms = async () => {
+  try {
+    const res = await axios.post("http://localhost:5000/send-sms");
+    console.log("✅ SMS sent frontend!", res.data);
+  } catch (err) {
+    console.log("SMS frontend error:", err.response?.data || err.message);
+  }
+};
 
   return (
     <div className="flex h-screen bg-gray-900 text-white font-sans">
@@ -275,6 +292,7 @@ const LokSabha = () => {
             >
               Logout
             </a>
+          
             <div
               className="bg-center bg-cover rounded-full border-2 border-gray-700 w-12 h-12"
               style={{
@@ -335,11 +353,13 @@ const LokSabha = () => {
         </div>
       </main>
 
+      
+
       {/* Add Button */}
       <button
         onClick={openModal}
         className="fixed bottom-8 right-8 bg-green-400 text-gray-900 p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-colors"
-        aria-label="Add post"
+        aria-label="Add issue"
       >
         <span className="material-symbols-outlined text-3xl">add</span>
       </button>
@@ -396,7 +416,7 @@ const LokSabha = () => {
 
                 <div className="flex flex-col">
                   
-                <LocationMap />
+                <LocationMap/>
                 </div>
               </div>
 

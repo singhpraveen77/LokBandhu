@@ -4,16 +4,19 @@
 /* Custom dark scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 8px;
+    z-index: 1;
  
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: #1f2937; /* matches bg-gray-800 */
+    z-index: 1;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #4b5563; /* matches gray-600 */
   border-radius: 9999px;
+    z-index: 1;
 }
 
 
@@ -25,5 +28,6 @@
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #4b5563 #1f2937;
+  z-index: 1;
 
 }
