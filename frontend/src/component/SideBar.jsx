@@ -26,7 +26,7 @@ const SideBar = () => {
               </clipPath>
             </defs>
           </svg>
-          <h1 className="text-xl font-bold">CivicConnect</h1>
+          <h1 className="text-xl font-bold">Lok Bandhu</h1>
         </div>
 
         <nav className="flex flex-col gap-4">
