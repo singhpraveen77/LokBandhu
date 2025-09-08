@@ -36,7 +36,7 @@ const WelcomePage = () => {
                 </clipPath>
               </defs>
             </svg>
-            <h1 className="text-xl font-bold tracking-tight">CivicConnect</h1>
+            <h1 className="text-xl font-bold tracking-tight">Lok Bandhu</h1>
           </div>
         </div>
       </header>

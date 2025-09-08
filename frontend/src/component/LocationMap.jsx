@@ -42,36 +42,46 @@ export default function LocationMap({ onSelect = () => {} }) {
   };
 
   const handleConfirm = () => {
-    setAddress("Connaught Place, New Delhi, Delhi 110001, India")
+    setAddress("Connaught Place, New Delhi, Delhi 110001, India");
     setShowMap(false);
     onSelect({ lat: position[0], lng: position[1], address });
   };
 
   return (
-    <div className="flex flex-col border-amber-300 ">
+    <div className="flex flex-col border-amber-300">
       <label className="text-sm text-gray-300 mb-1">Location</label>
-      <div className="flex gap-2">
+
+      {/* Responsive input + button layout */}
+      <div className="flex flex-wrap md:flex-nowrap gap-2">
         <input
           readOnly
           value={address}
-          className="flex-1 px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="flex-1 min-w-0 px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
         <button
           type="button"
           onClick={() => setShowMap(true)}
-          className="px-3 py-2 rounded-lg bg-green-400 text-gray-900 font-semibold hover:bg-opacity-90"
+          className="
+            w-full sm:w-auto md:w-fit
+            px-4 py-3 md:py-2
+            text-base md:text-sm
+            rounded-lg bg-green-400 text-gray-900 font-semibold
+            hover:bg-opacity-90 transition
+          "
         >
           Pick
         </button>
       </div>
 
       {showMap && (
-        <div className="fixed inset-0 z-99 flex items-center justify-center">
+        <div className="fixed inset-0 z-[99] flex items-center justify-center">
+          {/* Overlay */}
           <div
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setShowMap(false)}
           ></div>
 
+          {/* Dialog */}
           <div className="relative z-10 w-full max-w-3xl mx-4 bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-gray-700">
               <h3 className="text-lg font-semibold">Pick a Location</h3>
@@ -99,18 +109,18 @@ export default function LocationMap({ onSelect = () => {} }) {
               />
             </MapContainer>
 
-            <div className="flex justify-end gap-3 p-4 border-t border-gray-700">
+            <div className="flex flex-wrap md:flex-nowrap justify-end gap-3 p-4 border-t border-gray-700">
               <button
                 type="button"
                 onClick={() => setShowMap(false)}
-                className="px-4 py-2 rounded-full border border-gray-600 text-gray-200 hover:bg-gray-700"
+                className="px-4 py-2 rounded-full border border-gray-600 text-gray-200 hover:bg-gray-700 w-full sm:w-auto"
               >
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={handleConfirm}
-                className="px-5 py-2 rounded-full bg-green-400 text-gray-900 font-bold hover:bg-opacity-90"
+                className="px-5 py-2 rounded-full bg-green-400 text-gray-900 font-bold hover:bg-opacity-90 w-full sm:w-auto"
               >
                 Confirm Location
               </button>
