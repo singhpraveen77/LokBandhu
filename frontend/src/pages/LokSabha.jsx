@@ -285,7 +285,7 @@ const LokSabha = () => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-scroll custom-scrollbar p-8">
           <div className="max-w-2xl mx-auto space-y-8">
             {filteredPosts.length > 0 ? (
               filteredPosts.map((post, idx) => (
