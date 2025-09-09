@@ -45,7 +45,7 @@ const LoginPage = () => {
                 </clipPath>
               </defs>
             </svg>
-            <h1 className="text-xl font-bold">CivicConnect</h1>
+            <h1 className="text-xl font-bold">Lok Bandhu</h1>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <a className="text-sm font-medium text-gray-300 hover:text-white" href="#">

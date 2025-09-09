@@ -96,7 +96,7 @@ const Dashboard = () => {
           <span className="material-symbols-outlined text-green-400 text-3xl">
             diversity_3
           </span>
-          <h1 className="text-xl font-bold">CivicConnect</h1>
+          <h1 className="text-xl font-bold">Lok Bandhu</h1>
         </div>
 
         <nav className="flex flex-col gap-2">
