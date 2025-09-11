@@ -17,6 +17,7 @@ export default function LocationMap({ onSelect = () => {} }) {
   const [position, setPosition] = useState([28.6139, 77.209]); // Delhi default
   const [address, setAddress] = useState("Select on map");
 
+  
   const fetchAddress = async (lat, lng) => {
     try {
       // CORS proxy for frontend-only testing
