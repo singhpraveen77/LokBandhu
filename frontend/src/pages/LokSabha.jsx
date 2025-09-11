@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import LocationMap from "../component/LocationMap";
 import axios from "axios";
+import VoiceReport from "../component/VoiceReport";
 
 const initialPosts = [
   {
@@ -227,6 +228,8 @@ const LokSabha = () => {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white font-sans">
+      
+      
       <style>{`
         @keyframes typingReveal {
           from { width: 0 }
@@ -502,6 +505,7 @@ const LokSabha = () => {
                   placeholder="Write details..."
                 />
               </div>
+              <VoiceReport />
 
               {/* Category Selector */}
               <div className="flex flex-col">

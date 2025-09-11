@@ -27,7 +27,7 @@ export default function LocationMap({ onSelect = () => {} }) {
       );
       const text = await res.json();
       const data = JSON.parse(text.contents);
-      setAddress("Connaught Place, New Delhi, Delhi 110001, India" || "Unknown location");
+      setAddress(data.display_name || "Unknown location");
     } catch (err) {
       console.error(err);
       setAddress("Unknown location");
@@ -42,7 +42,7 @@ export default function LocationMap({ onSelect = () => {} }) {
   };
 
   const handleConfirm = () => {
-    setAddress("Connaught Place, New Delhi, Delhi 110001, India");
+    setAddress(address);
     setShowMap(false);
     onSelect({ lat: position[0], lng: position[1], address });
   };
