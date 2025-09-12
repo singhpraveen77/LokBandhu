@@ -110,6 +110,17 @@ const categories = [
 ];
 
 const LokSabha = () => {
+  const [language, setLanguage] = useState(
+    localStorage.getItem("language") || "en" // load saved language
+  );
+
+  const handleLanguageChange = (e) => {
+    const selectedLang = e.target.value;
+    setLanguage(selectedLang);
+    localStorage.setItem("language", selectedLang); // save to localStorage
+    console.log("Selected language:", selectedLang);
+  };
+
   const navigate = useNavigate();
 
   const [posts, setPosts] = useState(initialPosts);
@@ -306,6 +317,15 @@ const LokSabha = () => {
             >
               Profile
             </a>
+            <select
+              className="bg-gray-800 text-white border border-gray-600 rounded px-3 py-1"
+              value={language}
+              onChange={handleLanguageChange}
+            >
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+            </select>
+
             <a
               className="text-gray-300 hover:text-white transition-colors"
               href="#"
@@ -313,6 +333,7 @@ const LokSabha = () => {
             >
               Logout
             </a>
+            
 
             <div
               className="bg-center bg-cover rounded-full border-2 border-gray-700 w-12 h-12"
