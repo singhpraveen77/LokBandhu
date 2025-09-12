@@ -1,4 +1,4 @@
-// src/i18n.js
+// src/locales/i18n.js
 
 const translations = {
   en: {
@@ -7,6 +7,8 @@ const translations = {
       feed: "Feed",
       profile: "Profile",
       logout: "Logout",
+      staff: "Staff",
+      lokSabha: "Lok Sabha",
     },
     table: {
       problemID: "Problem ID",
@@ -31,6 +33,23 @@ const translations = {
       inProgress: "In Progress",
       resolved: "Resolved",
     },
+    posts: {
+      noPosts: "No posts in this category.",
+      addNew: "Add New Post",
+      author: "Author *",
+      title: "Title *",
+      description: "Description *",
+      category: "Category *",
+      selectCategory: "Select Category",
+      photo: "Photo",
+      addPhoto: "Add a photo",
+      dragDrop: "Drag and drop or click to upload",
+      remove: "Remove",
+      cancel: "Cancel",
+      post: "Post",
+      viewDetails: "View Details",
+      helpText: "I am here to help you",
+    },
   },
   hi: {
     header: {
@@ -38,6 +57,8 @@ const translations = {
       feed: "फ़ीड",
       profile: "प्रोफ़ाइल",
       logout: "लॉगआउट",
+      staff: "स्टाफ",
+      lokSabha: "लोक सभा",
     },
     table: {
       problemID: "समस्या आईडी",
@@ -61,6 +82,23 @@ const translations = {
       open: "खुला",
       inProgress: "प्रगति में",
       resolved: "सुलझा हुआ",
+    },
+    posts: {
+      noPosts: "इस श्रेणी में कोई पोस्ट नहीं है।",
+      addNew: "नई पोस्ट जोड़ें",
+      author: "लेखक *",
+      title: "शीर्षक *",
+      description: "विवरण *",
+      category: "श्रेणी *",
+      selectCategory: "श्रेणी चुनें",
+      photo: "फ़ोटो",
+      addPhoto: "एक फ़ोटो जोड़ें",
+      dragDrop: "खींचें और छोड़ें या अपलोड करने के लिए क्लिक करें",
+      remove: "हटाएँ",
+      cancel: "रद्द करें",
+      post: "पोस्ट करें",
+      viewDetails: "विवरण देखें",
+      helpText: "मैं आपकी मदद करने के लिए यहाँ हूँ",
     },
   },
 };

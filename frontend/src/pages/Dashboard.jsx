@@ -100,7 +100,7 @@ const Dashboard = () => {
 
             <div
               className="bg-center bg-cover rounded-full border-2 border-gray-700 w-12 h-12"
-              style={{ backgroundImage: 'url("https://randomuser.me/api/portraits/men/32.jpg")' }}
+              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&auto=format&fit=crop")' }}
             ></div>
           </div>
         </header>
