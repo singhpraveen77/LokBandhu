@@ -19,6 +19,12 @@ app.get("/", (req, res) => {
 });
 
 
+//routes 
+import userRoutes from "./routes/user.route.js"
+import problemRoutes from "./routes/problem.route.js"
+app.use("/api/users", userRoutes);
+app.use("/api/problems", problemRoutes);
+
 
 
 
