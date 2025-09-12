@@ -8,11 +8,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+
+enum Role {
+  CITIZEN
+  ADMIN
+  GOVT
 }
 
+enum Department {
+  WARD
+  ZONAL
+  COMMISSIONER
+}
 
+enum ProblemStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  password   String
+  role       Role      @default(CITIZEN)
+  department Department?
+  problems   Problem[]
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Problem {
+  id              Int            @id @default(autoincrement())
+  images          String[]       // store array of image URLs
+  location        String
+  description     String
+  voiceDescription String?       // optional field
+  category        String
+  status          ProblemStatus  @default(PENDING)
+  priority        String?        // optional ("low","medium","high")
+
+  userId          Int
+  user            User           @relation(fields: [userId], references: [id])
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
 
