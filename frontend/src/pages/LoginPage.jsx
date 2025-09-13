@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../api/userApi";
 const LoginPage = () => {
   const navigate=useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
     role: "",
   });
@@ -13,11 +14,16 @@ const LoginPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    navigate("/loksabha")
+    const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form data submitted:", formData);
-    // Handle login logic here
+    try {
+      const res = await login(formData);
+      console.log("Form data submitted:", res);
+
+      navigate("/loksabha");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -83,12 +89,12 @@ const LoginPage = () => {
                   Username
                 </label>
                 <input
-                  type="text"
-                  name="username"
-                  id="username"
-                  value={formData.username}
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={formData.email}
                   onChange={handleChange}
-                  placeholder="Username"
+                  placeholder="email"
                   required
                   className="relative block w-full appearance-none rounded-lg border border-gray-600 bg-gray-700 px-3 py-4 text-white placeholder-gray-400 focus:z-10 focus:border-green-400 focus:outline-none focus:ring-green-400 sm:text-sm"
                 />
@@ -126,12 +132,14 @@ const LoginPage = () => {
                   <option disabled value="">
                     Select Role
                   </option>
-                  <option value="Citizen">Citizen</option>
-                  <option value="Official">Official</option>
-                  <option value="Moderator">Moderator</option>
+                  <option value="CITIZEN">Citizen</option>
+                  <option value="GOVT">Official</option>
+                  <option value="ADMIN">Moderator</option>
                 </select>
               </div>
             </div>
+            
+
 
             <div>
               <button
