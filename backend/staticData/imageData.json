@@ -1,0 +1,58 @@
+{
+  "pothole.webp": {
+    "category": "infrastructure",
+    "descriptions": [
+      "A large pothole has formed on this road, disrupting smooth traffic movement and posing risks to vehicles. Immediate repair is essential to prevent accidents and damage to vehicles.",
+      "The road surface appears broken and uneven due to deep potholes. This has become a safety hazard for both pedestrians and drivers, requiring urgent civic intervention.",
+      "Poorly maintained road infrastructure has led to multiple potholes that hinder daily commuting. The issue highlights the need for timely repair and better road quality management."
+    ]
+  },
+  "garbage.jpg": {
+    "category": "cleanliness",
+    "descriptions": [
+      "Unattended garbage piles are creating serious hygiene issues in this area. The waste is attracting stray animals and insects, leading to health risks for nearby residents.",
+      "Overflowing trash has been left unattended, causing a foul smell and polluting the surroundings. This highlights negligence in sanitation services that must be addressed quickly.",
+      "Garbage accumulation near residential zones poses environmental hazards and affects public health. The area requires urgent cleaning and better waste management practices."
+    ]
+  },
+  "streetlight.jpg": {
+    "category": "publicSafety",
+    "descriptions": [
+      "A non-functional streetlight has left this road section dark and unsafe at night. The lack of proper lighting increases the risk of accidents and criminal activities.",
+      "The street remains unlit due to broken lighting infrastructure, creating insecurity for pedestrians and commuters after dark. Prompt repair is needed to restore safety.",
+      "Faulty street lighting has led to unsafe conditions in the locality. Civic authorities should act quickly to ensure adequate illumination and improve public safety."
+    ]
+  },
+  "park.jpg": {
+    "category": "environment",
+    "descriptions": [
+      "The public park is poorly maintained with overgrown grass and scattered litter. This neglect reduces its usability and spoils the natural beauty of the space.",
+      "An important green space is losing its charm due to lack of proper upkeep and sanitation. The community requires cleaner and greener surroundings for recreation.",
+      "Environmental neglect is evident in the park area with waste accumulation and damaged facilities. Restoration efforts are needed to revive this eco-friendly public zone."
+    ]
+  },
+  "school.jpg": {
+    "category": "education",
+    "descriptions": [
+      "The local school infrastructure appears underdeveloped with broken classrooms and inadequate facilities. This directly impacts the quality of education for students.",
+      "Damaged walls, insufficient sanitation, and lack of clean drinking water highlight poor educational infrastructure. Immediate action is required for students’ well-being.",
+      "The school building is in urgent need of renovation. Neglect of education facilities affects learning conditions and requires government attention."
+    ]
+  },
+  "drain.jpg": {
+    "category": "waterDrainage",
+    "descriptions": [
+      "The drainage system in this area is clogged, leading to waterlogging and foul smell. This is a potential breeding ground for mosquitoes and other diseases.",
+      "Stagnant water from an overflowing drain has created unhygienic living conditions. Proper drainage cleaning and maintenance are urgently required.",
+      "Poor water drainage has resulted in flooding during rainfall. This exposes residents to health risks and highlights civic negligence in sanitation management."
+    ]
+  },
+  "traffic.jpg": {
+    "category": "traffic",
+    "descriptions": [
+      "Severe traffic congestion has become a daily challenge in this area due to poor road planning. Commuters face delays and higher risks of accidents.",
+      "Improper traffic management and road bottlenecks are causing chaos during peak hours. Better regulation and infrastructure development are necessary.",
+      "Uncontrolled traffic with lack of signals and lane discipline creates frequent jams. This situation reflects the urgent need for better civic traffic management."
+    ]
+  }
+}
