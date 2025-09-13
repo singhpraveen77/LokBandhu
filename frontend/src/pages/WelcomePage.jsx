@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../api/userApi";
 
 const WelcomePage = () => {
   const [role, setRole] = useState("citizen");
@@ -10,6 +11,17 @@ const WelcomePage = () => {
     console.log("Selected role:", role);
     // You can handle navigation or next step here
   };
+
+  const handlecheck=async()=>{
+    try {
+      await login();
+    } catch (error) {
+      console.log("error in calling welcome page :",error);
+      
+    }
+  }
+
+
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-white" style={{ fontFamily: '"Spline Sans", "Noto Sans", sans-serif' }}>
@@ -40,6 +52,7 @@ const WelcomePage = () => {
           </div>
         </div>
       </header>
+      
 
       <main className="flex-grow flex items-center justify-center pt-20 pb-10 px-4">
         <div className="w-full max-w-md mx-auto text-center">

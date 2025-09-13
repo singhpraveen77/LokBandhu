@@ -3,14 +3,25 @@ import dotenv from "dotenv";
 import twilio from "twilio";
 import cors from "cors";
 
+import fs from "fs";
 dotenv.config();
+
+const imageData = JSON.parse(fs.readFileSync("./staticData/imageData.json", "utf-8"));
+
+console.log("image Data :",imageData);
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 
 // Middleware
-app.use(cors()); 
+app.use(
+  cors({
+    origin: "http://localhost:5173", 
+    credentials: true,               
+  })
+);
 app.use(express.json());
 
 // Test route
@@ -28,7 +39,7 @@ app.use("/api/problems", problemRoutes);
 
 
 
-
+//sms service
 app.post("/send-sms", async (req, res) => {
     
   const messageText = `Complaint Registered
@@ -60,6 +71,27 @@ app.post("/send-sms", async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+
+//auto generation description !!
+app.post("/api/generate-description", (req, res) => {
+  const { imageName } = req.body;
+
+  if (!imageData[imageName]) {
+    return res.status(404).json({ error: "Image data not found" });
+  }
+
+  const { category, descriptions } = imageData[imageName];
+  const randomDescription =
+    descriptions[Math.floor(Math.random() * descriptions.length)];
+
+  res.json({
+    imageName,
+    category,
+    description: randomDescription,
+  });
+});
+
 
 // Start server
 app.listen(PORT, () => {
