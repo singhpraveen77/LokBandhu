@@ -5,6 +5,7 @@ import axios from "axios";
 import VoiceReport from "../component/VoiceReport";
 import avatar from "../assets/avataaars-1757352915302.svg";
 import translations from "../locales/i18n";
+import AddPost from "./AddPost";
 
 const initialPosts = [
   {
@@ -453,180 +454,19 @@ const LokSabha = () => {
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
 
           {/* Dialog */}
-          <div
-            ref={dialogRef}
-            className="relative z-10 overflow-y-scroll h-[90vh] w-full max-w-xl mx-4 
-             rounded-2xl bg-gray-800 border border-gray-700 shadow-2xl custom-scrollbar"
-          >
-            <div className="flex items-center justify-between p-5 border-b border-gray-700">
-              <h3 id="add-post-title" className="text-xl font-semibold">
-                {t.posts.addNew}
-              </h3>
-              <button
-                onClick={closeModal}
-                className="p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                aria-label="Close"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="p-5 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col">
-                  <label htmlFor="author" className="text-sm text-gray-300 mb-1">
-                    {t.posts.author}
-                  </label>
-                  <input
-                    ref={firstFieldRef}
-                    id="author"
-                    name="author"
-                    value={form.author}
-                    onChange={handleChange}
-                    required
-                    className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    placeholder={t.posts.author}
-                  />
-                </div>
-
-                <div className="flex flex-col">
-                  <LocationMap />
-                </div>
-              </div>
-
-              <div className="flex flex-col">
-                <label htmlFor="title" className="text-sm text-gray-300 mb-1">
-                  {t.posts.title}
-                </label>
-                <input
-                  id="title"
-                  name="title"
-                  value={form.title}
-                  onChange={handleChange}
-                  required
-                  className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                  placeholder={t.posts.title}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <label
-                  htmlFor="description"
-                  className="text-sm text-gray-300 mb-1"
-                >
-                  {t.posts.description}
-                </label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={form.description}
-                  onChange={handleChange}
-                  required
-                  rows={4}
-                  className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 resize-y"
-                  placeholder={t.posts.description}
-                />
-              </div>
-              <VoiceReport />
-
-              {/* Category Selector */}
-              <div className="flex flex-col">
-                <label htmlFor="category" className="text-sm text-gray-300 mb-1">
-                  {t.posts.category}
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  value={form.category}
-                  onChange={handleChange}
-                  required
-                  className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
-                >
-                  <option value="">{t.posts.selectCategory}</option>
-                  {categories
-                    .filter((c) => c.key !== "allIssues")
-                    .map((c, idx) => (
-                      <option key={idx} value={t.categories[c.key]}>
-                        {t.categories[c.key]}
-                      </option>
-                    ))}
-                </select>
-              </div>
-
-              {/* Photo uploader */}
-              <div className="flex flex-col">
-                <label className="text-sm text-gray-300 mb-1">{t.posts.photo}</label>
-
-                <div
-                  onClick={() => fileInputRef.current?.click()}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                    e.dataTransfer.dropEffect = "copy";
-                  }}
-                  onDrop={(e) => {
-                    e.preventDefault();
-                    const f = e.dataTransfer.files?.[0];
-                    if (f && f.type.startsWith("image/")) setImageFile(f);
-                  }}
-                  className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-600 rounded-xl bg-gray-900 hover:border-gray-500 cursor-pointer text-center px-4"
-                >
-                  <span className="material-symbols-outlined text-4xl text-gray-400">
-                    cloud_upload
-                  </span>
-                  <p className="mt-1 font-semibold text-gray-200">{t.posts.addPhoto}</p>
-                  <p className="text-xs text-gray-400">
-                    {t.posts.dragDrop}
-                  </p>
-                </div>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  onChange={(e) => {
-                    const f = e.target.files?.[0];
-                    if (f && f.type.startsWith("image/")) setImageFile(f);
-                  }}
-                />
-
-                {imagePreview && (
-                  <div className="mt-3 flex items-center gap-3">
-                    <div
-                      className="w-20 h-14 bg-cover bg-center rounded-lg border border-gray-700"
-                      style={{ backgroundImage: `url(${imagePreview})` }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setImageFile(null);
-                        setImagePreview("");
-                      }}
-                      className="px-3 py-1 rounded-full border border-gray-600 text-gray-200 hover:bg-gray-700 text-sm"
-                    >
-                      {t.posts.remove}
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex items-center justify-end gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="px-4 py-2 rounded-full border border-gray-600 text-gray-200 hover:bg-gray-700"
-                >
-                  {t.posts.cancel}
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-full bg-green-400 text-gray-900 font-bold hover:bg-opacity-90"
-                >
-                  {t.posts.post}
-                </button>
-              </div>
-            </form>
-          </div>
+          <AddPost
+            t={t}
+            form={form}
+            setForm={setForm}  
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            categories={categories}
+            closeModal={closeModal}
+            setImageFile={setImageFile}
+            imagePreview={imagePreview}
+            setImagePreview={setImagePreview}
+            firstFieldRef={firstFieldRef}
+          />
         </div>
       )}
     </div>
