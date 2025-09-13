@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const mockProblems = [
   { id: 1, title: "Potholes on Main Road", status: "Pending - Assigned to Municipal Staff" },
@@ -11,6 +11,7 @@ export default function AIBot({ t }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null); // for auto-scroll
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -28,6 +29,13 @@ export default function AIBot({ t }) {
     setMessages([...messages, { type: "user", text: input }, { type: "bot", text: response }]);
     setInput("");
   };
+
+  // Auto scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   return (
     <div className="fixed bottom-28 right-20 z-50">
@@ -69,7 +77,7 @@ export default function AIBot({ t }) {
       {/* Chat Dialog */}
       {open && (
         <div
-          className="absolute bottom-[104px] right-0 bg-slate-900 text-white rounded-2xl shadow-2xl w-80 h-96 flex flex-col animate-fadeIn border border-slate-700"
+          className="absolute bottom-[104px] right-0 bg-slate-900 text-white rounded-2xl shadow-2xl w-96 h-[500px] flex flex-col animate-fadeIn border border-slate-700"
         >
           {/* Header */}
           <div className="bg-green-500 text-white p-3 rounded-t-2xl font-bold flex justify-between items-center">
@@ -80,7 +88,7 @@ export default function AIBot({ t }) {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-2 text-m flex flex-col">
+          <div className="flex-1 overflow-y-auto p-3 space-y-3 text-base flex flex-col">
             {messages.length === 0 ? (
               <div className="text-gray-400 text-center m-auto">
                 💡 Ask me your doubt!
@@ -89,18 +97,22 @@ export default function AIBot({ t }) {
               messages.map((msg, i) => (
                 <div
                   key={i}
-                  className={`p-2 max-w-[80%] rounded-lg ${
+                  className={`p-2 max-w-[85%] rounded-lg leading-relaxed ${
                     msg.type === "user"
                       ? "bg-green-600 text-white self-end ml-auto"
                       : "bg-slate-800 text-gray-200 mr-auto"
                   }`}
                 >
                   {msg.text.split("\n").map((line, idx) => (
-                    <div key={idx}>{line}</div>
+                    <div key={idx} className="mb-2 last:mb-0">
+                      {line}
+                    </div>
                   ))}
                 </div>
               ))
             )}
+            {/* Dummy div to scroll into view */}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Input */}
@@ -111,11 +123,11 @@ export default function AIBot({ t }) {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               placeholder="Ask me something..."
-              className="flex-1 bg-slate-800 border border-slate-700 rounded-full px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 text-white placeholder-gray-400"
+              className="flex-1 bg-slate-800 border border-slate-700 rounded-full px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-green-500 text-white placeholder-gray-400"
             />
             <button
               onClick={handleSend}
-              className="bg-green-500 text-white px-4 rounded-full hover:bg-green-600 transition"
+              className="bg-green-500 text-white px-5 rounded-full hover:bg-green-600 transition"
             >
               ➤
             </button>
