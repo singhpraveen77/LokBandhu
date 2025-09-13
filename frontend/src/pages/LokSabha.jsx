@@ -7,7 +7,6 @@ import avatar from "../assets/avataaars-1757352915302.svg";
 import translations from "../locales/i18n";
 
 import AddPost from "./AddPost";
-=======
 import AIBot from "./AIBot";
 
 
