@@ -8,6 +8,7 @@ const mockProblems = [
 
 export default function AIBot({ t }) {
   const [open, setOpen] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
 
@@ -29,12 +30,17 @@ export default function AIBot({ t }) {
   };
 
   return (
-    <div className="fixed bottom-28 right-20 z-50 group">
+    <div className="fixed bottom-28 right-20 z-50">
       {/* Bot Button */}
       <button
         type="button"
         aria-label="AI assistant"
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          setOpen(!open);
+          setShowTooltip(false);
+        }}
+        onMouseEnter={() => !open && setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
         className="shadow-none focus:outline-none bg-transparent"
       >
         <img
@@ -44,25 +50,26 @@ export default function AIBot({ t }) {
         />
       </button>
 
-
-  {/* Tooltip on Hover */}
-      <div className="absolute bottom-[104px] left-1/4 -translate-x-1/2 hidden group-hover:block">
-        <div className="relative bg-black text-white rounded-md shadow-lg px-4 py-2 max-w-[80vw] text-left">
-          <div
-            className="tw-typewriter tw-typewriter-run font-bold text-lg md:text-xl"
-            style={{ display: "inline-block" }}
-          >
-            {t?.posts?.helpText || "Hi! 👋 Click me to chat with me."}
+      {/* Tooltip */}
+      {showTooltip && !open && (
+        <div className="absolute bottom-[104px] left-1/4 -translate-x-1/2">
+          <div className="relative bg-black text-white rounded-md shadow-lg px-4 py-2 max-w-[80vw] text-left">
+            <div
+              className="tw-typewriter tw-typewriter-run font-bold text-lg md:text-xl"
+              style={{ display: "inline-block" }}
+            >
+              {t?.posts?.helpText || "Hi! 👋 Click me to chat with me."}
+            </div>
+            {/* Arrow */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-full h-0 w-0 border-l-6 border-r-6 border-t-6 border-l-transparent border-r-transparent border-t-black" />
           </div>
-          {/* Arrow */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-full h-0 w-0 border-l-6 border-r-6 border-t-6 border-l-transparent border-r-transparent border-t-black" />
         </div>
-      </div>
-      
+      )}
+
       {/* Chat Dialog */}
       {open && (
         <div
-          className="absolute bottom-[104px] right-0 bg-white text-black rounded-2xl shadow-2xl w-80 h-96 flex flex-col animate-fadeIn"
+          className="absolute bottom-[104px] right-0 bg-slate-900 text-white rounded-2xl shadow-2xl w-80 h-96 flex flex-col animate-fadeIn border border-slate-700"
         >
           {/* Header */}
           <div className="bg-green-500 text-white p-3 rounded-t-2xl font-bold flex justify-between items-center">
@@ -73,32 +80,38 @@ export default function AIBot({ t }) {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 space-y-2 text-sm">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={`p-2 max-w-[80%] rounded-lg ${
-                  msg.type === "user"
-                    ? "bg-blue-500 text-white self-end ml-auto"
-                    : "bg-gray-200 text-gray-800 mr-auto"
-                }`}
-              >
-                {msg.text.split("\n").map((line, idx) => (
-                  <div key={idx}>{line}</div>
-                ))}
+          <div className="flex-1 overflow-y-auto p-3 space-y-2 text-m flex flex-col">
+            {messages.length === 0 ? (
+              <div className="text-gray-400 text-center m-auto">
+                💡 Ask me your doubt!
               </div>
-            ))}
+            ) : (
+              messages.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`p-2 max-w-[80%] rounded-lg ${
+                    msg.type === "user"
+                      ? "bg-green-600 text-white self-end ml-auto"
+                      : "bg-slate-800 text-gray-200 mr-auto"
+                  }`}
+                >
+                  {msg.text.split("\n").map((line, idx) => (
+                    <div key={idx}>{line}</div>
+                  ))}
+                </div>
+              ))
+            )}
           </div>
 
           {/* Input */}
-          <div className="p-3 border-t flex gap-2">
+          <div className="p-3 border-t border-slate-700 flex gap-2 bg-slate-900">
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend()}
               placeholder="Ask me something..."
-              className="flex-1 border rounded-full px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="flex-1 bg-slate-800 border border-slate-700 rounded-full px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 text-white placeholder-gray-400"
             />
             <button
               onClick={handleSend}
@@ -129,4 +142,3 @@ export default function AIBot({ t }) {
     </div>
   );
 }
-
