@@ -18,8 +18,8 @@ const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", 
-    credentials: true,               
+    origin: "*", 
+    // credentials: true,               
   })
 );
 app.use(express.json());
