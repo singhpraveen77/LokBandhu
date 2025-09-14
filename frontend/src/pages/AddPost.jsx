@@ -25,7 +25,7 @@ const AddPost = ({
     <div
       ref={dialogRef}
       className="relative z-10 overflow-y-scroll h-[90vh] w-full max-w-xl mx-4 
-       rounded-2xl bg-gray-800 border border-gray-700 shadow-2xl custom-scrollbar"
+       rounded-2xl bg-gray-800 border border-gray-700 shadow-2xl custom-scrollbar text-white"
     >
       {/* Header */}
       <div className="flex items-center justify-between p-5 border-b border-gray-700">
@@ -46,7 +46,7 @@ const AddPost = ({
         {/* Author + Map */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
-            <label htmlFor="author" className="text-sm text-gray-300 mb-1">
+            <label htmlFor="author" className="text-sm mb-1">
               {t.posts.author}
             </label>
             <input
@@ -56,7 +56,7 @@ const AddPost = ({
               value={form.author}
               onChange={handleChange}
               required
-              className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 text-white placeholder-gray-400"
               placeholder={t.posts.author}
             />
           </div>
@@ -76,7 +76,7 @@ const AddPost = ({
 
         {/* Category */}
         <div className="flex flex-col">
-          <label htmlFor="category" className="text-sm text-gray-300 mb-1">
+          <label htmlFor="category" className="text-sm mb-1">
             {t.posts.category}
           </label>
           <select
@@ -85,7 +85,7 @@ const AddPost = ({
             value={form.category}
             onChange={handleChange}
             required
-            className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 text-white"
           >
             <option value="">{t.posts.selectCategory}</option>
             {categories
@@ -100,7 +100,7 @@ const AddPost = ({
 
         {/* Description */}
         <div className="flex flex-col relative">
-          <label htmlFor="description" className="text-sm text-gray-300 mb-1">
+          <label htmlFor="description" className="text-sm mb-1">
             {t.posts.description}
           </label>
 
@@ -112,7 +112,7 @@ const AddPost = ({
             required
             rows={4}
             disabled={isLoadingDis} // prevent typing while generating
-            className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 resize-y"
+            className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 resize-y text-white placeholder-gray-400"
             placeholder={isLoadingDis ? "" : t.posts.description}
           />
 
