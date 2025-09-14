@@ -144,9 +144,7 @@ const LokSabha = () => {
 
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
-  const fileInputRef = useRef(null);
 
-  const dialogRef = useRef(null);
   const firstFieldRef = useRef(null);
 
   const openModal = () => setOpen(true);
@@ -197,7 +195,7 @@ const LokSabha = () => {
       form.image.trim() ||
       "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&auto=format&fit=crop";
 
-    // sendSms();
+    sendSms();
 
     const newPost = {
       author: form.author.trim(),
