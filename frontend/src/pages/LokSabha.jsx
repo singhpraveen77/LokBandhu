@@ -310,14 +310,14 @@ const LokSabha = () => {
           <div className="flex items-center gap-6">
             <a
               className="text-gray-300 hover:text-white transition-colors"
-              href="#"
+              href=""
               onClick={() => navigate("/dashboard")}
             >
               {t.header.staff}
             </a>
             <a
               className="text-gray-300 hover:text-white transition-colors"
-              href="#"
+              href=""
               onClick={() => navigate("/profile")}
             >
               {t.header.profile}
@@ -333,7 +333,7 @@ const LokSabha = () => {
 
             <a
               className="text-gray-300 hover:text-white transition-colors"
-              href="#"
+              href=""
               onClick={() => navigate("/")}
             >
               {t.header.logout}

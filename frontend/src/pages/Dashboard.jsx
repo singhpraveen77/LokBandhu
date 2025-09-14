@@ -84,9 +84,9 @@ const Dashboard = () => {
           </h2>
 
           <div className="flex items-center gap-6">
-            <a className="text-gray-300 hover:text-white transition-colors" onClick={() => navigate("/analysis")}>{t.header.analysis}</a>
-            <a className="text-gray-300 hover:text-white transition-colors" href="#" onClick={() => navigate("/loksabha")}>{t.header.feed}</a>
-            <a className="text-gray-300 hover:text-white transition-colors" href="#" onClick={() => navigate("/profile")}>{t.header.profile}</a>
+            <a className="text-gray-300 hover:text-white transition-colors" href="" onClick={() => navigate("/analysis")}>{t.header.analysis}</a>
+            <a className="text-gray-300 hover:text-white transition-colors" href="" onClick={() => navigate("/loksabha")}>{t.header.feed}</a>
+            <a className="text-gray-300 hover:text-white transition-colors" href="" onClick={() => navigate("/profile")}>{t.header.profile}</a>
 
             {/* Language Dropdown */}
             <select
@@ -98,7 +98,7 @@ const Dashboard = () => {
               <option value="hi">हिन्दी</option>
             </select>
 
-            <a className="text-gray-300 hover:text-white transition-colors" href="#" onClick={() => navigate("/")}>{t.header.logout}</a>
+            <a className="text-gray-300 hover:text-white transition-colors" href="" onClick={() => navigate("/")}>{t.header.logout}</a>
 
             <div
               className="bg-center bg-cover rounded-full border-2 border-gray-700 w-12 h-12"
