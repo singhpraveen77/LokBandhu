@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import translations from "../locales/i18n";
+import avatar from "../assets/avataaars-1757352915302.svg";
 
 const initialProblems = [
   { id: 1024, description: "Potholes on Main Road", location: "Delhi, India", reporter: "Ravi Kumar", status: "Open", category: "Infrastructure" },
@@ -83,6 +84,7 @@ const Dashboard = () => {
           </h2>
 
           <div className="flex items-center gap-6">
+            <a className="text-gray-300 hover:text-white transition-colors" onClick={() => navigate("/analysis")}>{t.header.analysis}</a>
             <a className="text-gray-300 hover:text-white transition-colors" href="#" onClick={() => navigate("/loksabha")}>{t.header.feed}</a>
             <a className="text-gray-300 hover:text-white transition-colors" href="#" onClick={() => navigate("/profile")}>{t.header.profile}</a>
 
@@ -100,7 +102,7 @@ const Dashboard = () => {
 
             <div
               className="bg-center bg-cover rounded-full border-2 border-gray-700 w-12 h-12"
-              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&auto=format&fit=crop")' }}
+              style={{ backgroundImage: `url(${avatar})`}}
             ></div>
           </div>
         </header>
