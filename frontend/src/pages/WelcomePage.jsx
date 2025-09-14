@@ -7,7 +7,7 @@ const WelcomePage = () => {
   const navigate=useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate("/loginpage")
+    navigate("/login")
     console.log("Selected role:", role);
     // You can handle navigation or next step here
   };

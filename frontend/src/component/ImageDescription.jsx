@@ -7,6 +7,7 @@ export default function ImageDescription({
   setImagePreview,
   fileInputRef,
   setForm,
+  setLoadingDis,
 }) {
   const handleFileSelect = async (file) => {
     if (!file || !file.type.startsWith("image/")) return;
@@ -17,18 +18,26 @@ export default function ImageDescription({
     setImagePreview(preview);
 
     try {
-      // call backend to get category + description
+      // start loader
+      setLoadingDis(true);
+
+      // call backend
       const res = await axios.post("http://localhost:5000/api/generate-description", {
         imageName: file.name,
       });
 
-      setForm((prev) => ({
-        ...prev,
-        category: t.categories[res.data.category], // 👈 map key -> translated label
-        description: res.data.description,
-      }));
+      // wait minimum 2 sec before showing description
+      setTimeout(() => {
+        setForm((prev) => ({
+          ...prev,
+          category: t.categories[res.data.category],
+          description: res.data.description,
+        }));
+        setLoadingDis(false);
+      }, 2000);
     } catch (err) {
       console.error("Error generating description:", err);
+      setLoadingDis(false);
     }
   };
 
