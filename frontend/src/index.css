@@ -31,3 +31,35 @@
   z-index: 1;
 
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden; /* disable sideways scroll */
+  background-color: #0f172a; /* match your dark theme */
+}
+.typewriter {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid #a78bfa; /* optional cursor */
+  width: 0;
+  animation: typing 1s steps(40, end) forwards, blink 0.8s step-end infinite;
+}
+
+/* Typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Blinking cursor */
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
