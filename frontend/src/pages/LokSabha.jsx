@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import LocationMap from "../component/LocationMap";
 import axios from "axios";
-import VoiceReport from "../component/VoiceReport";
 import avatar from "../assets/avataaars-1757352915302.svg";
 import translations from "../locales/i18n";
 
@@ -194,7 +192,7 @@ const LokSabha = () => {
       form.image.trim() ||
       "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&auto=format&fit=crop";
 
-    sendSms();
+    // sendSms();
 
     const newPost = {
       author: form.author.trim(),
