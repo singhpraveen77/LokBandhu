@@ -132,7 +132,7 @@ const Dashboard = () => {
                           problem.status === "In Progress" ? "bg-yellow-500 text-gray-900" :
                           "bg-red-500 text-white"
                         }`}>
-                          {t.status[problem.status.replace(/\s+/g, "")]}
+                          {problem.status.replace(/\s+/g, "")}
                         </span>
                       </td>
                     </tr>
