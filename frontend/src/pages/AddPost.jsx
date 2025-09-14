@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import LocationMap from "../component/LocationMap";
 import VoiceReport from "../component/VoiceReport";
 import ImageDescription from "../component/ImageDescription";
+import AnimatedTextLoader from "../component/AnimatedTextLoader"; // 👈 loader
 
 const AddPost = ({
   t,
@@ -14,10 +15,11 @@ const AddPost = ({
   imagePreview,
   setImagePreview,
   firstFieldRef,
-  setForm, // 👈 added for updating category & description
+  setForm,
 }) => {
   const dialogRef = useRef(null);
   const fileInputRef = useRef(null);
+  const [isLoadingDis, setLoadingDis] = useState(false);
 
   return (
     <div
@@ -69,6 +71,7 @@ const AddPost = ({
           setImagePreview={setImagePreview}
           fileInputRef={fileInputRef}
           setForm={setForm}
+          setLoadingDis={setLoadingDis}
         />
 
         {/* Category */}
@@ -96,10 +99,11 @@ const AddPost = ({
         </div>
 
         {/* Description */}
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
           <label htmlFor="description" className="text-sm text-gray-300 mb-1">
             {t.posts.description}
           </label>
+
           <textarea
             id="description"
             name="description"
@@ -107,9 +111,17 @@ const AddPost = ({
             onChange={handleChange}
             required
             rows={4}
+            disabled={isLoadingDis} // prevent typing while generating
             className="px-3 py-2 rounded-lg bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 resize-y"
-            placeholder={t.posts.description}
+            placeholder={isLoadingDis ? "" : t.posts.description}
           />
+
+          {/* Loader overlay */}
+          {isLoadingDis && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-70 rounded-lg">
+              <AnimatedTextLoader />
+            </div>
+          )}
         </div>
 
         <VoiceReport />
