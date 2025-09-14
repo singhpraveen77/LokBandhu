@@ -6,6 +6,8 @@ import translations from "../locales/i18n";
 
 import AddPost from "./AddPost";
 import AIBot from "./AIBot";
+import useUserStore from "../store/useUserStore";
+import AnimatedTextLoader from "../component/AnimatedTextLoader";
 
 
 const initialPosts = [
@@ -121,13 +123,16 @@ const LokSabha = () => {
   
   const navigate = useNavigate();
 
+  const user=useUserStore((state)=>state.user)
+
+  console.log("user in lok :",user);
+  
+
   const [posts, setPosts] = useState(initialPosts);
   const [filteredPosts, setFilteredPosts] = useState(initialPosts);
   const [activeCategory, setActiveCategory] = useState("allIssues");
   const [open, setOpen] = useState(false);
-  const [local, setLocal] = useState(
-    "Connaught Place, New Delhi, Delhi 110001, India"
-  );
+ 
   const [form, setForm] = useState({
     author: "",
     location: "",
@@ -266,7 +271,7 @@ const LokSabha = () => {
             caret 1s step-end infinite;
         }
       `}</style>
-
+      {/* <AnimatedTextLoader /> */}
       {/* Sidebar */}
       <aside className="w-64 bg-gray-800 p-6 flex-col hidden lg:flex">
         <div className="flex items-center gap-3 mb-8">
@@ -301,25 +306,30 @@ const LokSabha = () => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
-        <header className="flex items-center justify-between p-6 border-b border-gray-700 sticky top-0 bg-gray-900 z-10">
+       <header className="flex items-center justify-between p-6 border-b border-gray-700 sticky top-0 bg-gray-900 z-10">
           <h2 className="text-3xl font-bold">
-            {activeCategory === "allIssues" ? t.header.lokSabha : t.categories[activeCategory]}
+            {activeCategory === "allIssues"
+              ? t.header.lokSabha
+              : t.categories[activeCategory]}
           </h2>
           <div className="flex items-center gap-6">
-            <a
-              className="text-gray-300 hover:text-white transition-colors"
-              href="#"
-              onClick={() => navigate("/dashboard")}
-            >
-              {t.header.staff}
-            </a>
-            <a
-              className="text-gray-300 hover:text-white transition-colors"
-              href="#"
+            {/* Staff tab only visible when user.role === "GOVT" */}
+            {user?.role === "GOVT" && (
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                {t.header.staff}
+              </button>
+            )}
+
+            <button
               onClick={() => navigate("/profile")}
+              className="text-gray-300 hover:text-white transition-colors"
             >
               {t.header.profile}
-            </a>
+            </button>
+
             <select
               className="bg-gray-800 text-white border border-gray-600 rounded px-3 py-1"
               value={language}
@@ -329,14 +339,12 @@ const LokSabha = () => {
               <option value="hi">हिन्दी</option>
             </select>
 
-            <a
-              className="text-gray-300 hover:text-white transition-colors"
-              href="#"
+            <button
               onClick={() => navigate("/")}
+              className="text-gray-300 hover:text-white transition-colors"
             >
               {t.header.logout}
-            </a>
-            
+            </button>
 
             <div
               className="bg-center bg-cover rounded-full border-2 border-gray-700 w-12 h-12"
@@ -344,10 +352,9 @@ const LokSabha = () => {
                 backgroundImage: `url(${avatar})`,
               }}
             ></div>
-
-
           </div>
         </header>
+
 
         <div className="flex-1 overflow-y-auto p-8">
           <div className="max-w-2xl mx-auto space-y-8">
@@ -401,36 +408,7 @@ const LokSabha = () => {
 
       {/* AI Bot with tooltip centered over bot, arrow pointing to bot center */}
       <AIBot t={t}/>
-      {/* <div className="fixed bottom-28 right-19 z-50 group">
-        <button
-          type="button"
-          aria-label="AI assistant"
-          onClick={() => {
-            // open AI panel/modal if needed
-          }}
-          className="shadow-none focus:outline-none focus:ring-2 focus:ring-green-400 bg-transparent"
-        >
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
-            alt="AI bot"
-            className="w-20 h-20 rounded-none bg-transparent transition-transform duration-200 hover:scale-105"
-          />
-        </button>
-
-      //   Tooltip bubble centered over bot 
-        <div className="absolute bottom-[104px] left-1/4 -translate-x-1/2 hidden group-hover:block">
-          <div className="relative bg-black text-white rounded-md shadow-lg px-4 py-2 max-w-[80vw] text-left">
-            <div
-              className="tw-typewriter tw-typewriter-run font-bold text-lg md:text-xl"
-              style={{ display: "inline-block" }}
-            >
-              {t.posts.helpText}
-            </div>
-            // Arrow centered to bot 
-            <div className="absolute left-1/2 -translate-x-1/2 top-full h-0 w-0 border-l-6 border-r-6 border-t-6 border-l-transparent border-r-transparent border-t-black" />
-          </div>
-        </div>
-      </div> */}
+      
 
       {/* Add Button */}
       <button

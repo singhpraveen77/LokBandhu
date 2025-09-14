@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/userApi";
+import useUserStore from "../store/useUserStore";
+
 const LoginPage = () => {
   const navigate=useNavigate();
+  const setUser=useUserStore((state)=>state.setUser)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,9 +17,12 @@ const LoginPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-    const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setUser(formData)
+      
+      
       const res = await login(formData);
       console.log("Form data submitted:", res);
 
