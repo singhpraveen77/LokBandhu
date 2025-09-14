@@ -4,6 +4,7 @@ const translations = {
   en: {
     header: {
       problemsOverview: "Problems Overview",
+      analysis:"Analysis",
       feed: "Feed",
       profile: "Profile",
       logout: "Logout",
@@ -54,6 +55,7 @@ const translations = {
   hi: {
     header: {
       problemsOverview: "समस्याओं का अवलोकन",
+      analysis:"विश्लेषण",
       feed: "फ़ीड",
       profile: "प्रोफ़ाइल",
       logout: "लॉगआउट",
