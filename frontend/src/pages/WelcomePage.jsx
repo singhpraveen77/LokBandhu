@@ -52,7 +52,6 @@ const WelcomePage = () => {
           </div>
         </div>
       </header>
-      
 
       <main className="flex-grow flex items-center justify-center pt-20 pb-10 px-4">
         <div className="w-full max-w-md mx-auto text-center">
