@@ -313,6 +313,7 @@ const LokSabha = () => {
               : t.categories[activeCategory]}
           </h2>
           <div className="flex items-center gap-6">
+
             {/* Staff tab only visible when user.role === "GOVT" */}
             {user?.role === "GOVT" && (
               <button
@@ -324,6 +325,7 @@ const LokSabha = () => {
             )}
 
             <button
+
               onClick={() => navigate("/profile")}
               className="text-gray-300 hover:text-white transition-colors"
             >
@@ -340,6 +342,7 @@ const LokSabha = () => {
             </select>
 
             <button
+
               onClick={() => navigate("/")}
               className="text-gray-300 hover:text-white transition-colors"
             >
