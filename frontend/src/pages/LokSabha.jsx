@@ -8,100 +8,6 @@ import AIBot from "./AIBot";
 import useUserStore from "../store/useUserStore";
 import axios from "axios";
 
-const initialPosts = [
-  {
-    author: "Ravi Kumar",
-    location: "Delhi, India",
-    title: "Potholes on Main Road",
-    description:
-      "Several deep potholes on MG Road causing accidents. Needs urgent repair.",
-    image:
-      "https://cdn.shopify.com/s/files/1/0274/7288/7913/files/MicrosoftTeams-image_32.jpg?v=1705315718",
-    likes: 10,
-    comments: 3,
-    actionText: "View Details",
-    category: "Infrastructure",
-  },
-  {
-    author: "Neha Sharma",
-    location: "Mumbai, India",
-    title: "Overflowing Garbage Bins",
-    description:
-      "Garbage not collected for a week in Andheri East. Strong smell in the area.",
-    image:
-      "https://www.norcalcompactors.net/wp-content/uploads/2020/05/overflowing-garbage.jpg",
-    likes: 18,
-    comments: 7,
-    actionText: "View Details",
-    category: "Cleanliness",
-  },
-  {
-    author: "Mohammed Ali",
-    location: "Lucknow, India",
-    title: "Streetlights not working",
-    description:
-      "Entire lane near Hazratganj is dark at night due to broken streetlights.",
-    image:
-      "https://media.istockphoto.com/id/496026170/photo/broken-street-lamp.jpg?s=612x612&w=0&k=20&c=1bX4binyYkD8P_ZzHbfRTspKowTIGoTkSjxvbcjAkY4=",
-    likes: 7,
-    comments: 2,
-    actionText: "View Details",
-    category: "Public Safety",
-  },
-  {
-    author: "Priya Singh",
-    location: "Chennai, India",
-    title: "Tree Cutting in Park",
-    description:
-      "Old trees in Anna Nagar park being cut without notice. Residents protesting.",
-    image:
-      "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1200&q=80&auto=format&fit=crop",
-    likes: 22,
-    comments: 5,
-    actionText: "View Details",
-    category: "Environment",
-  },
-  {
-    author: "Ankit Verma",
-    location: "Patna, India",
-    title: "Broken School Building",
-    description:
-      "Government school in Kankarbagh has damaged classrooms. Unsafe for children.",
-    image:
-      "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&q=80&auto=format&fit=crop",
-    likes: 14,
-    comments: 6,
-    actionText: "View Details",
-    category: "Education",
-  },
-  {
-    author: "Sunita Devi",
-    location: "Bhopal, India",
-    title: "Water Supply Problem",
-    description:
-      "No water supply in Ashoka Colony since 3 days. Residents struggling.",
-    image:
-      "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=1200&q=80&auto=format&fit=crop",
-    likes: 11,
-    comments: 4,
-    actionText: "View Details",
-    category: "Water & Drainage",
-  },
-  {
-    author: "Rahul Mehta",
-    location: "Jaipur, India",
-    title: "Traffic Signal Not Working",
-    description:
-      "Signal at MI Road crossing is broken, causing traffic chaos during peak hours.",
-    image:
-      "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200&q=80&auto=format&fit=crop",
-    likes: 9,
-    comments: 1,
-    actionText: "View Details",
-    category: "Traffic",
-  },
-];
-
 const categories = [
   { icon: "category", key: "allIssues" },
   { icon: "edit_road", key: "infrastructure" },
@@ -122,8 +28,8 @@ const LokSabha = () => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
 
-  const [posts, setPosts] = useState(initialPosts);
-  const [filteredPosts, setFilteredPosts] = useState(initialPosts);
+  const [posts, setPosts] = useState(t.postsData);
+  const [filteredPosts, setFilteredPosts] = useState(t.postsData);
   const [activeCategory, setActiveCategory] = useState("allIssues");
   const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -155,6 +61,15 @@ const LokSabha = () => {
       );
     }
   }, [activeCategory, posts, t]);
+
+  useEffect(() => {
+    setPosts(t.postsData);
+    setFilteredPosts(
+      activeCategory === "allIssues"
+        ? t.postsData
+        : t.postsData.filter((p) => p.category === t.categories[activeCategory])
+    );
+  }, [language]);
 
   useEffect(() => {
     if (!imageFile) {
@@ -190,8 +105,8 @@ const LokSabha = () => {
       image: img,
       likes: 0,
       comments: 0,
-      actionText: "View Details",
-      category: form.category || "Uncategorized",
+      actionText: t.posts.viewDetails,
+      category: form.category || t.categories.allIssues,
     };
 
     setPosts((prev) => [newPost, ...prev]);
@@ -258,7 +173,9 @@ const LokSabha = () => {
 
           <nav className="flex flex-col gap-2">
             <h3 className="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-2">
-              {t.categories.allIssues === "All Issues" ? "Categories" : "श्रेणियाँ"}
+              {t.categories.allIssues === "All Issues"
+                ? "Categories"
+                : "श्रेणियाँ"}
             </h3>
             {categories.map((item, idx) => (
               <button
