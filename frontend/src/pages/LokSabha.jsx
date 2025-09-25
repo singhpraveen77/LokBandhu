@@ -6,6 +6,7 @@ import translations from "../locales/i18n";
 import AddPost from "./AddPost";
 import AIBot from "./AIBot";
 import useUserStore from "../store/useUserStore";
+import axios from "axios";
 
 const initialPosts = [
   {
@@ -172,7 +173,7 @@ const LokSabha = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!form.title || !form.description || !form.author) return;
+    // if (!form.title || !form.description || !form.author) return;
 
     const img =
       imagePreview ||
@@ -212,6 +213,18 @@ const LokSabha = () => {
       prev.map((p, i) => (i === idx ? { ...p, likes: p.likes + 1 } : p))
     );
   };
+
+  const sendSms=async()=>{
+    try {
+      const res=await axios.post("http://localhost:5000/send-sms");
+      console.log("asdf",res.data);
+      
+      
+    } catch (error) {
+      console.log("front end sms",error);
+      
+    }
+  }
 
   const handleLanguageChange = (e) => {
     const selectedLang = e.target.value;
@@ -435,13 +448,14 @@ const LokSabha = () => {
       <AIBot t={t} />
 
       {/* Add Button */}
-      <button
+
+      { user?.role==="GOVT" &&      <button
         onClick={openModal}
         className="fixed bottom-6 right-23 bg-green-400 text-gray-900 p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-colors"
         aria-label="Add issue"
       >
         <span className="material-symbols-outlined text-3xl">add</span>
-      </button>
+      </button>}
 
       {/* Modal */}
       {open && (
