@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/userApi";
 import useUserStore from "../store/useUserStore";
+// import Loading from "../component/loading";
+import { PropagateLoader } from 'react-spinners';
 
 const LoginPage = () => {
   const navigate=useNavigate();
@@ -11,6 +13,7 @@ const LoginPage = () => {
     password: "",
     role: "",
   });
+  const [loading,setLoading]= useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,19 +22,25 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       setUser(formData)
       
       
       const res = await login(formData);
       console.log("Form data submitted:", res);
+      
 
       navigate("/loksabha");
     } catch (error) {
       console.error("Login failed:", error);
     }
+    finally{
+      setLoading(false);
+    }
   };
 
+  
   return (
     <div className="flex min-h-screen flex-col bg-gray-900 text-white font-sans">
       <header className="border-b border-gray-700">
@@ -147,12 +156,17 @@ const LoginPage = () => {
             
 
 
+            
             <div>
               <button
                 type="submit"
-                className="group relative flex w-full justify-center rounded-full border border-transparent bg-green-400 py-3 px-4 text-sm font-semibold text-gray-900 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-800"
+                className="group h-10 relative flex w-full justify-center items-center rounded-full border border-transparent bg-green-400 py-3 px-4 text-sm font-semibold text-gray-900 hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-800"
               >
-                Login
+                {loading ? (
+                  <PropagateLoader size={8} />
+                ) : (
+                  <span>Login</span>
+                )}
               </button>
             </div>
           </form>
