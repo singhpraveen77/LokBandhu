@@ -42,11 +42,22 @@ app.use("/api/problems", problemRoutes);
 //sms service
 app.post("/send-sms", async (req, res) => {
     
-  const messageText = `Complaint Registered
-      Category: Infrastructure
-      Reported by User: +919536xxxxxx
-      Location:  Connaught Place, New Delhi, Delhi 110001, India
-      Please take necessary action.`;
+  // const messageText = `Complaint Registered
+  //     Category: Infrastructure
+  //     Reported by User: +919536xxxxxx
+  //     Location:  Connaught Place, New Delhi, Delhi 110001, India
+  //     Please take necessary action.`;
+  // const phoneNumbers = process.env.phoneNumbers.split(",");
+  // console.log("phone number :",phoneNumbers);
+  
+  const messageText = `🚨 Emergency Alert 🚨
+A hazard has been reported near Marine Drive, Mumbai.
+For your safety, please evacuate the area immediately and move towards designated safe zones.
+
+✅ Emergency response teams and local authorities are already on the way to assist.
+📞 For urgent help, please contact the disaster helpline at 1800-XXXX-XXXX.
+
+Stay calm, follow official instructions, and help those in need. Your safety is our priority.`;
   const phoneNumbers = process.env.phoneNumbers.split(",");
   console.log("phone number :",phoneNumbers);
   
