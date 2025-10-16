@@ -25,9 +25,9 @@ app.use(
 app.use(express.json());
 
 // Test route
-app.get("/", (req, res) => {
-  res.send("🚀 Server is up and running!");
-});
+// app.get("/", (req, res) => {
+//   res.send("🚀 Server is up and running!");
+// });
 
 
 //routes 
