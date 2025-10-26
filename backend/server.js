@@ -37,6 +37,10 @@ app.use("/api/users", userRoutes);
 app.use("/api/problems", problemRoutes);
 
 
+app.get("/",(req,res)=>{
+  return res.send("// server is up ")
+})
+
 
 
 //sms service
