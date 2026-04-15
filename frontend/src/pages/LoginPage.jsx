@@ -24,16 +24,21 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      setUser(formData)
-      
-      
       const res = await login(formData);
       console.log("Form data submitted:", res);
       
-
-      navigate("/loksabha");
+      // Store user data in store
+      setUser(res.user);
+      
+      // Navigate based on role
+      if (res.user.role === "ADMIN") {
+        navigate("/dashboard");
+      } else {
+        navigate("/loksabha");
+      }
     } catch (error) {
       console.error("Login failed:", error);
+      alert(error.response?.data?.error || "Login failed. Please check your credentials.");
     }
     finally{
       setLoading(false);

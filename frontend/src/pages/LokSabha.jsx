@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import avatar from "../assets/avataaars-1757352915302.svg";
 import translations from "../locales/i18n";
+import toast, { Toaster } from "react-hot-toast";
 
 import AddPost from "./AddPost";
 import AIBot from "./AIBot";
 import useUserStore from "../store/useUserStore";
-import axios from "axios";
+import { getIssues, likeIssue } from "../api/issueApi";
+import { logout } from "../api/userApi";
 
 const categories = [
   { icon: "category", key: "allIssues" },
@@ -27,13 +29,15 @@ const LokSabha = () => {
 
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
+  const clearUser = useUserStore((state) => state.clearUser);
 
-  const [posts, setPosts] = useState(t.postsData);
-  const [filteredPosts, setFilteredPosts] = useState(t.postsData);
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState("allIssues");
   const [open, setOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
     author: "",
@@ -52,23 +56,49 @@ const LokSabha = () => {
   const openModal = () => setOpen(true);
   const closeModal = () => setOpen(false);
 
+  // Fetch issues from backend
+  useEffect(() => {
+    fetchIssues();
+  }, []);
+
+  const fetchIssues = async () => {
+    try {
+      setLoading(true);
+      const data = await getIssues({ ordering: "-priority_score,-created_at" });
+      setPosts(data.results || []);
+      setFilteredPosts(data.results || []);
+    } catch (error) {
+      console.error("Failed to fetch issues:", error);
+      toast.error("Failed to load issues");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (activeCategory === "allIssues") {
       setFilteredPosts(posts);
     } else {
-      setFilteredPosts(
-        posts.filter((p) => p.category === t.categories[activeCategory])
-      );
+      // Map frontend categories to backend issue types
+      const categoryMap = {
+        infrastructure: "ROAD",
+        cleanliness: "GARBAGE",
+        publicSafety: "STREET_LIGHT",
+        waterDrainage: "WATER",
+      };
+      
+      const issueType = categoryMap[activeCategory];
+      if (issueType) {
+        setFilteredPosts(posts.filter((p) => p.issue_type === issueType));
+      } else {
+        setFilteredPosts(posts);
+      }
     }
-  }, [activeCategory, posts, t]);
+  }, [activeCategory, posts]);
 
   useEffect(() => {
-    setPosts(t.postsData);
-    setFilteredPosts(
-      activeCategory === "allIssues"
-        ? t.postsData
-        : t.postsData.filter((p) => p.category === t.categories[activeCategory])
-    );
+    // Language change doesn't affect backend data
+    // Just update UI translations
   }, [language]);
 
   useEffect(() => {
@@ -86,60 +116,38 @@ const LokSabha = () => {
     setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!form.title || !form.description || !form.author) return;
-
-    const img =
-      imagePreview ||
-      form.image.trim() ||
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&q=80&auto=format&fit=crop";
-
-    sendSms();
-
-    const newPost = {
-      author: form.author.trim(),
-      location: form.location.trim() || "Unknown",
-      title: form.title.trim(),
-      description: form.description.trim(),
-      image: img,
-      likes: 0,
-      comments: 0,
-      actionText: t.posts.viewDetails,
-      category: form.category || t.categories.allIssues,
-    };
-
-    setPosts((prev) => [newPost, ...prev]);
-    setForm({
-      author: "",
-      location: "",
-      title: "",
-      description: "",
-      image: "",
-      category: "",
-    });
-    setImageFile(null);
-    setImagePreview("");
+    // Form submission is now handled in AddPost component
     closeModal();
+    // Refresh issues after adding
+    fetchIssues();
   };
 
-  const handleLike = (idx) => {
-    setPosts((prev) =>
-      prev.map((p, i) => (i === idx ? { ...p, likes: p.likes + 1 } : p))
-    );
-  };
-
-  const sendSms=async()=>{
+  const handleLike = async (issueId, idx) => {
     try {
-      const res=await axios.post("http://localhost:5000/send-sms");
-      console.log("asdf",res.data);
+      const res = await likeIssue(issueId);
+      toast.success(res.liked ? "Issue liked!" : "Issue unliked!");
       
-      
+      // Update local state
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === issueId
+            ? { ...p, likes_count: res.liked ? p.likes_count + 1 : p.likes_count - 1, is_liked: res.liked }
+            : p
+        )
+      );
     } catch (error) {
-      console.log("front end sms",error);
-      
+      console.error("Failed to like issue:", error);
+      toast.error("Failed to like issue");
     }
-  }
+  };
+
+  const handleLogout = () => {
+    logout();
+    clearUser();
+    navigate("/login");
+  };
 
   const handleLanguageChange = (e) => {
     const selectedLang = e.target.value;
@@ -149,6 +157,7 @@ const LokSabha = () => {
 
   return (
     <div className="min-h-screen w-full bg-[#0f172a]">
+      <Toaster position="top-right" />
       <div className="flex h-screen text-white font-sans overflow-hidden">
         {/* Sidebar */}
         <aside
@@ -237,7 +246,7 @@ const LokSabha = () => {
                   {t.header.profile}
                 </button>
                 <button
-                  onClick={() => navigate("/")}
+                  onClick={handleLogout}
                   className="text-gray-300 hover:text-white transition-colors"
                 >
                   {t.header.logout}
@@ -278,7 +287,7 @@ const LokSabha = () => {
                     <button
                       onClick={() => {
                         setDropdownOpen(false);
-                        navigate("/");
+                        handleLogout();
                       }}
                       className="block w-full text-left px-4 py-2 hover:bg-gray-700 text-red-400"
                     >
@@ -309,42 +318,63 @@ const LokSabha = () => {
           {/* Posts */}
           <div className="flex-1 overflow-y-auto p-4 md:p-8">
             <div className="max-w-2xl mx-auto space-y-6 md:space-y-8">
-              {filteredPosts.length > 0 ? (
+              {loading ? (
+                <div className="text-center text-gray-400">Loading issues...</div>
+              ) : filteredPosts.length > 0 ? (
                 filteredPosts.map((post, idx) => (
                   <div
-                    key={idx}
+                    key={post.id}
                     className="bg-gray-800 rounded-2xl overflow-hidden shadow-lg"
                   >
-                    <div
-                      className="w-full h-40 md:h-48 bg-center bg-cover"
-                      style={{ backgroundImage: `url(${post.image})` }}
-                    ></div>
+                    {post.image && (
+                      <div
+                        className="w-full h-40 md:h-48 bg-center bg-cover"
+                        style={{ backgroundImage: `url(${post.image})` }}
+                      ></div>
+                    )}
                     <div className="p-4 md:p-6">
                       <p className="text-gray-400 text-sm mb-1">
-                        {t.posts.author.split("*")[0]} {post.author} •{" "}
-                        {post.location}
+                        {t.posts.author.split("*")[0]} {post.created_by_name} •{" "}
+                        {post.address || "Unknown location"}
                       </p>
                       <h3 className="text-lg md:text-xl font-bold mb-2">
                         {post.title}
                       </h3>
-                      <p className="text-gray-300 mb-4">{post.description}</p>
+                      <p className="text-gray-300 mb-2">{post.description}</p>
+                      <div className="flex gap-2 mb-4">
+                        <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">
+                          {post.issue_type}
+                        </span>
+                        <span className={`px-2 py-1 rounded text-xs ${
+                          post.status === "RESOLVED" ? "bg-green-500/20 text-green-400" :
+                          post.status === "IN_PROGRESS" ? "bg-yellow-500/20 text-yellow-400" :
+                          "bg-gray-500/20 text-gray-400"
+                        }`}>
+                          {post.status}
+                        </span>
+                        <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded text-xs">
+                          Priority: {post.priority_score}
+                        </span>
+                      </div>
                       <div className="flex items-center justify-between text-gray-400">
                         <div className="flex items-center gap-4">
                           <button
-                            onClick={() => handleLike(idx)}
-                            className="flex items-center gap-2 hover:text-white transition-colors"
+                            onClick={() => handleLike(post.id, idx)}
+                            className={`flex items-center gap-2 hover:text-white transition-colors ${
+                              post.is_liked ? "text-green-400" : ""
+                            }`}
                           >
                             <span className="material-symbols-outlined">
-                              thumb_up
+                              {post.is_liked ? "thumb_up" : "thumb_up"}
                             </span>
-                            <span>{post.likes}</span>
+                            <span>{post.likes_count}</span>
                           </button>
-                          <button className="flex items-center gap-2 hover:text-white transition-colors">
+                          <div className="flex items-center gap-2">
                             <span className="material-symbols-outlined">
-                              chat_bubble
+                              person
                             </span>
-                            <span>{post.comments}</span>
-                          </button>
+                            <span className="text-sm">{post.current_authority_name || "Unassigned"}</span>
+                          </div>
                         </div>
                         <button className="bg-green-400 text-gray-900 font-bold py-1.5 px-3 md:py-2 md:px-4 rounded-full hover:bg-opacity-90 transition-colors text-sm md:text-base">
                           {t.posts.viewDetails}
@@ -354,7 +384,7 @@ const LokSabha = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-gray-400">{t.posts.noPosts}</p>
+                <p className="text-gray-400 text-center">{t.posts.noPosts}</p>
               )}
             </div>
           </div>
@@ -364,15 +394,16 @@ const LokSabha = () => {
       {/* AI Bot */}
       <AIBot t={t} />
 
-      {/* Add Button */}
-
-      { user?.role==="GOVT" &&      <button
-        onClick={openModal}
-        className="fixed bottom-6 right-23 bg-green-400 text-gray-900 p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-colors"
-        aria-label="Add issue"
-      >
-        <span className="material-symbols-outlined text-3xl">add</span>
-      </button>}
+      {/* Add Button - Only for PUBLIC users (citizens) */}
+      {user?.role === "PUBLIC" && (
+        <button
+          onClick={openModal}
+          className="fixed bottom-6 right-6 bg-green-400 text-gray-900 p-4 rounded-full shadow-lg hover:bg-opacity-90 transition-colors z-30"
+          aria-label="Add issue"
+        >
+          <span className="material-symbols-outlined text-3xl">add</span>
+        </button>
+      )}
 
       {/* Modal */}
       {open && (
@@ -398,6 +429,7 @@ const LokSabha = () => {
             imagePreview={imagePreview}
             setImagePreview={setImagePreview}
             firstFieldRef={firstFieldRef}
+            onSuccess={fetchIssues}
           />
         </div>
       )}

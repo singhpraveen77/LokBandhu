@@ -2,7 +2,9 @@ import { useRef, useState } from "react";
 import LocationMap from "../component/LocationMap";
 import VoiceReport from "../component/VoiceReport";
 import ImageDescription from "../component/ImageDescription";
-import AnimatedTextLoader from "../component/AnimatedTextLoader"; // 👈 loader
+import AnimatedTextLoader from "../component/AnimatedTextLoader";
+import { createIssue } from "../api/issueApi";
+import toast from "react-hot-toast";
 
 const AddPost = ({
   t,
@@ -16,10 +18,69 @@ const AddPost = ({
   setImagePreview,
   firstFieldRef,
   setForm,
+  onSuccess,
 }) => {
   const dialogRef = useRef(null);
   const fileInputRef = useRef(null);
   const [isLoadingDis, setLoadingDis] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("title", form.title || form.description.substring(0, 50));
+      formData.append("description", form.description);
+      formData.append("latitude", form.latitude || 28.6139);
+      formData.append("longitude", form.longitude || 77.2090);
+      formData.append("address", form.location || "Unknown");
+      
+      // Map category to issue_type
+      const categoryMap = {
+        [t.categories.infrastructure]: "ROAD",
+        [t.categories.cleanliness]: "GARBAGE",
+        [t.categories.publicSafety]: "STREET_LIGHT",
+        [t.categories.waterDrainage]: "WATER",
+      };
+      
+      const issueType = categoryMap[form.category] || "ROAD";
+      formData.append("issue_type", issueType);
+      formData.append("location_type", "URBAN");
+
+      // Add image if exists
+      if (fileInputRef.current?.files[0]) {
+        formData.append("image", fileInputRef.current.files[0]);
+      }
+
+      const res = await createIssue(formData);
+      console.log("Issue created:", res);
+      
+      toast.success("Issue reported successfully!");
+      
+      // Reset form
+      setForm({
+        author: "",
+        location: "",
+        title: "",
+        description: "",
+        image: "",
+        category: "",
+        latitude: "",
+        longitude: "",
+      });
+      setImagePreview("");
+      
+      if (onSuccess) onSuccess();
+      closeModal();
+    } catch (error) {
+      console.error("Failed to create issue:", error);
+      toast.error(error.response?.data?.detail || "Failed to report issue");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div
@@ -42,7 +103,7 @@ const AddPost = ({
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="p-5 space-y-4">
+      <form onSubmit={handleFormSubmit} className="p-5 space-y-4">
         {/* Author + Map */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="flex flex-col">
@@ -137,9 +198,10 @@ const AddPost = ({
           </button>
           <button
             type="submit"
-            className="px-5 py-2 rounded-full bg-green-400 text-gray-900 font-bold hover:bg-opacity-90"
+            disabled={isSubmitting}
+            className="px-5 py-2 rounded-full bg-green-400 text-gray-900 font-bold hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {t.posts.post}
+            {isSubmitting ? "Posting..." : t.posts.post}
           </button>
         </div>
       </form>
